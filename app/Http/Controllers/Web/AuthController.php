@@ -9,14 +9,14 @@ class AuthController extends Controller
 {
     public function signin(Request  $request)
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ])->validate();
+        // $validated = $request->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required'
+        // ])->validate();
 
-        if ($validated->fails()) {
-            // return back()->withErrors($validated);
-            return back();
-        }
+        // if ($validated->fails()) {
+        //     // return back()->withErrors($validated);
+        //     return back();
+        // }
     }
 }

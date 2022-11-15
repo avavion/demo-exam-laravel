@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +20,12 @@ class Article extends Model
         'image_path'
     ];
 
-    public function user()
+    /**
+     * Relation user
+     *
+     * @return HasOne
+     */
+    public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
@@ -38,7 +44,13 @@ class Article extends Model
         $this->save();
     }
 
-    public function upload_image(UploadedFile|null $file)
+    /**
+     * Upload image file for article
+     *
+     * @param UploadedFile|null $file
+     * @return void
+     */
+    public function upload_image(UploadedFile|null $file): void
     {
         if ($file) {
             if ($this->image_path) {
