@@ -19,12 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->as('auth.')->group(function () {
     Route::post('/signin', 'signin')->name('signin');
     Route::post('/signup', 'signup')->name('signup');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'logout')->name('logout');
 });
 
 Route::controller(IndexController::class)->as('page.')->group(function () {
-    Route::middleware(['auth', AdminAuthMiddleware::class])->get('/admin-panel', 'videos')->name('articles');
+    Route::middleware(['auth', AdminAuthMiddleware::class])->get('/admin-panel', 'articles')->name('articles');
     Route::get('/signin', 'signin')->name('signin');
     Route::get('/signup', 'signup')->name('signup');
-    Route::get('/logout', 'logout')->name('logout');
 });

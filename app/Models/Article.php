@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 class Article extends Model
 {
     use HasFactory;
+
+    const IS_PUBLISHED = "published";
+    const IS_UNPUBLISHED = "unpublished";
+    const IS_CHECK = "in_check";
 
     protected $fillable = [
         'title',
@@ -59,5 +65,15 @@ class Article extends Model
 
             $this->upload('image_path', 'images', $file);
         }
+    }
+
+    /**
+     * Get image path url
+     *
+     * @return string|UrlGenerator|Application
+     */
+    public function getImageUrlAttribute(): string|UrlGenerator|Application
+    {
+        return url(Storage::url($this->image_path));
     }
 }

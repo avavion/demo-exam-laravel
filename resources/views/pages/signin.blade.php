@@ -11,7 +11,7 @@
             </h2>
         </header>
 
-        <form action="{{ route('auth.signin') }}">
+        <form action="{{ route('auth.signin') }}" method="POST">
             @csrf
 
             <div class="control">

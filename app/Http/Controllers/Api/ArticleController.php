@@ -6,32 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-    public function getUser()
+    /**
+     * Helper for get Auth User
+     *
+     * @return Authenticatable|null
+     */
+    public function getUser(): ?Authenticatable
     {
         return Auth::user();
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        return ArticleResource::collection(Article::all());
+        return ArticleResource::collection(Article::query()->orderByDesc('created_at')->get());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ArticleRequest $request
+     * @return ArticleResource
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request): ArticleResource
     {
         $validated = $request->validated();
 
@@ -46,10 +55,10 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Article  $article
-     * @return \Illuminate\Http\Response
+     * @param Article $article
+     * @return ArticleResource
      */
-    public function show(Article $article)
+    public function show(Article $article): ArticleResource
     {
         return ArticleResource::make($article);
     }
@@ -57,9 +66,9 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return Response
      */
     public function update(Request $request, Article $article)
     {
@@ -69,10 +78,10 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Article $article
+     * @return ArticleResource
      */
-    public function destroy(Article $article)
+    public function destroy(Article $article): ArticleResource
     {
         $article->delete();
 

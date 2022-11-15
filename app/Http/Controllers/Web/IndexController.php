@@ -10,7 +10,10 @@ class IndexController extends Controller
 {
     public function articles()
     {
-        $articles = Article::all();
+        $articles = Article::query()
+            ->where('status', '=', Article::IS_UNPUBLISHED)
+            ->orWhere('status', '=', Article::IS_CHECK)
+            ->get();
 
         return view('index', compact('articles'));
     }
@@ -18,11 +21,5 @@ class IndexController extends Controller
     public function signin()
     {
         return view('pages.signin');
-    }
-
-
-    public function signup()
-    {
-        return view('pages.signup');
     }
 }

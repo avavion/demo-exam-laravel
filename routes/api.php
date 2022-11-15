@@ -18,20 +18,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-
 Route::controller(AuthController::class)->group(function () {
     Route::post('/signin', 'signin');
     Route::post('/signup', 'signup');
 });
 
-Route::group(['middleware' => 'auth:sanctum', 'controller' => ArticleController::class], function () {
+Route::group(['controller' => ArticleController::class], function () {
     Route::get('/articles', 'index');
-    Route::post('/articles/create', 'store');
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/articles/create', 'store');
+        Route::patch('/articles/{article:id}', 'update');
+        Route::delete('/articles/{article:id}', 'delete');
+    });
+
     Route::get('/articles/{article:id}', 'show');
-    Route::patch('/articles/{article:id}', 'update');
-    Route::delete('/articles/{article:id}', 'delete');
 });

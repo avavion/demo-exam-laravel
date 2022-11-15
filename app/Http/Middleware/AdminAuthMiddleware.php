@@ -23,6 +23,8 @@ class AdminAuthMiddleware
             return $next($request);
         }
 
+        Auth::logout();
+
         return redirect()->route('page.signin');
     }
 }
